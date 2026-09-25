@@ -9,19 +9,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Java 21
-        uses: actions/setup-java@v5
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew || true
+      - name: Generate Gradle Wrapper Jar
+        run: gradle wrapper
 
-      - name: Build Fabric Mod
-        uses: fabricmc/fabric-action@v1
-        with:
-          task: build
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build --no-daemon
 
       - name: Upload JAR
         uses: actions/upload-artifact@v4
