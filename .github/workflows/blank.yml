@@ -10,16 +10,18 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up Java 21
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Install Gradle
-        run: sudo apt-get update && sudo apt-get install -y gradle
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew || true
 
-      - name: Build with Gradle
-        run: gradle build --no-daemon
+      - name: Build Fabric Mod
+        uses: fabricmc/fabric-action@v1
+        with:
+          task: build
 
       - name: Upload JAR
         uses: actions/upload-artifact@v4
